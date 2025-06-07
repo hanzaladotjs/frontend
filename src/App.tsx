@@ -1,39 +1,38 @@
-import { useMemo, useState } from "react";
+import  { useState, useCallback } from 'react';
 
-// In this assignment, your task is to create a component that performs an expensive calculation (finding the factorial) based on a user input. 
-// Use useMemo to ensure that the calculation is only recomputed when the input changes, not on every render.
+// Create a component with a text input field and a button. The goal is to display an alert with the text entered when the button is clicked. Use useCallback to memoize the event handler function that triggers the alert, ensuring it's not recreated on every render.
+// Currently we only have inputText as a state variable and hence you might not see the benefits of 
+// useCallback. We're also not passing it down to another component as a prop which is another reason for you to not see it's benefits immedietely.
 
 function App() {
-    const [input, setInput] = useState(0);
-    // Your solution starts here
+    const [inputText, setInputText] = useState('');
+
+    // Your code starts here
    
-    // Your solution ends here 
-    function calc() {
-     let fact  = 1;
-      for (let i = input; i>0; i--){
-        fact = fact * i;
-      }
-      return fact
-    }
-
-    function clicked () {
-      console.log("hi there")
-    }
-
-    const expensiveValue = useMemo( () => {
-     return calc()
-    },[input])
+     const showAlert =  useCallback(function showAlert() {
+        alert(inputText)
+      },[inputText])
+    
+    // Your code ends here
+function cic () {
+  console.log("we clicked it ")
+}
     return (
         <div>
-            <input 
-                type="number" 
-                value={input} 
-                onChange={(e) => setInput(Number(e.target.value))} 
+            <input
+                type="text"
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                placeholder="Enter some text"
             />
-            <p>Calculated Value: {expensiveValue}</p>
-           
+            <Alert showAlert={showAlert} />
+            <button className='border-2 ' onClick={cic}>click me </button>
         </div>
     );
+};
+
+function Alert({showAlert}:any) {
+    return <button onClick={showAlert}>Show Alert</button>
 }
 
 export default App
