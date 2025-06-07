@@ -1,39 +1,34 @@
-import { useMemo, useState } from "react";
+import { useState, useMemo } from 'react';
+// You have been given a list of items you shopped from the grocery store
+// You need to calculate the total amount of money you spent
 
-// In this assignment, your task is to create a component that performs an expensive calculation (finding the factorial) based on a user input. 
-// Use useMemo to ensure that the calculation is only recomputed when the input changes, not on every render.
+const App= () => {
+    const [items, setItems] = useState([
+        { name: 'Chocolates', value: 10 },
+        { name: 'Chips', value: 20 },
+        { name: 'Onion', value: 30 },
+        { name: 'Tomato', value: 30 },
+        // Add more items as needed
+    ]);
 
-function App() {
-    const [input, setInput] = useState(0);
-    // Your solution starts here
-   
-    // Your solution ends here 
-    function calc() {
-     let fact  = 1;
-      for (let i = input; i>0; i--){
-        fact = fact * i;
+    const totalValue = useMemo ( () => {
+      let i, value=0;
+      for (i=0; i<items.length; i++){
+        value= value + items[i].value
       }
-      return fact
-    }
+      return value
+    }, [items])
 
-    function clicked () {
-      console.log("hi there")
-    }
-
-    const expensiveValue = useMemo( () => {
-     return calc()
-    },[input])
     return (
         <div>
-            <input 
-                type="number" 
-                value={input} 
-                onChange={(e) => setInput(Number(e.target.value))} 
-            />
-            <p>Calculated Value: {expensiveValue}</p>
-           
+            <ul>
+                {items.map((item, index) => (
+                    <li key={index}>{item.name} - Price: ${item.value}</li>
+                ))}
+            </ul>
+            <p>Total Value: {totalValue}</p>
         </div>
     );
-}
+};
 
 export default App
