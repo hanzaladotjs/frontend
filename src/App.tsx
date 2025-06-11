@@ -1,38 +1,34 @@
-import  { useState, useCallback } from 'react';
-
-// Create a component with a text input field and a button. The goal is to display an alert with the text entered when the button is clicked. Use useCallback to memoize the event handler function that triggers the alert, ensuring it's not recreated on every render.
-// Currently we only have inputText as a state variable and hence you might not see the benefits of 
-// useCallback. We're also not passing it down to another component as a prop which is another reason for you to not see it's benefits immedietely.
+import { useContext, useState } from "react";
+import { State } from "./context";
 
 function App() {
-    const [inputText, setInputText] = useState('');
+  const [count, setCount] = useState<number>(0);
+  
+  return (
+    <State.Provider value={count}>
+    <div>
+      <Count />
+      <Buttons setCount={setCount}></Buttons>
+    </div>
+    </State.Provider>
+  );
+}
 
-    // Your code starts here
-   
-     const showAlert =  useCallback(function showAlert() {
-        alert(inputText)
-      },[inputText])
+function Count() {
+  const count = useContext(State)
+  return <div>{count}</div>;
+}
+
+function Buttons({setCount }: any) {
+  const count = useContext(State)
+  return (
     
-    // Your code ends here
-function cic () {
-  console.log("we clicked it ")
-}
-    return (
-        <div>
-            <input
-                type="text"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                placeholder="Enter some text"
-            />
-            <Alert showAlert={showAlert} />
-            <button className='border-2 ' onClick={cic}>click me </button>
-        </div>
-    );
-};
-
-function Alert({showAlert}:any) {
-    return <button onClick={showAlert}>Show Alert</button>
+      <div>
+        <button onClick={() => setCount(count + 1)}>incre</button>
+        <button onClick={() => setCount(count - 1)}>decree</button>
+      </div>
+   
+  );
 }
 
-export default App
+export default App;
